@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  db:
+    build: image/mysql
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - ./config/mysql:/etc/mysql/conf.d
+    environment:
+      MYSQL_ROOT_PASSWORD: dev
+      MYSQL_DATABASE: dev
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+    ports:
+      - 3306:3306
+  apache-php56:
+    build: image/apache-php56
+    volumes:
+      - ../www:/var/www/html
+      - ./config/apache/php.ini:/usr/local/etc/php/php.ini
+      - ./log/apache:/var/log/apache2
+    ports:
+      - 81:80
+
