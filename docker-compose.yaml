@@ -1,10 +1,11 @@
 version: '3.3'
 services:
   db:
+    container_name: 'mysql-last-version'
     build: image/mysql
     volumes:
-      - ./mysql:/var/lib/mysql
-      - ./config/mysql:/etc/mysql/conf.d
+      - mysql_data:/var/lib/mysql
+      - ./config/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf
     environment:
       MYSQL_ROOT_PASSWORD: dev
       MYSQL_DATABASE: dev
@@ -13,11 +14,15 @@ services:
     ports:
       - 3306:3306
   apache-php56:
+    container_name: 'apache-with-php-56'
     build: image/apache-php56
     volumes:
       - ../www:/var/www/html
-      - ./config/apache/php.ini:/usr/local/etc/php/php.ini
+      - ./config/php/php.ini:/usr/local/etc/php/php.ini
+      - ./config/apache:/etc/apache2
       - ./log/apache:/var/log/apache2
     ports:
       - 81:80
+volumes:
+  mysql_data:
 
